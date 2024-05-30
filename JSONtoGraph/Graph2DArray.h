@@ -1,4 +1,12 @@
 #pragma once
-class Graph2DArray
+#include "Graph.h"
+
+namespace Graph
 {
-};
+	class Graph2DArray
+	{
+	private:
+		Vertex* vertices;
+		Edge* edges;
+	};
+}
