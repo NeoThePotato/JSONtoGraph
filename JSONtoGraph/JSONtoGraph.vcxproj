@@ -130,14 +130,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="File.cpp" />
+    <ClCompile Include="Graph.cpp" />
     <ClCompile Include="Graph2DArray.cpp" />
     <ClCompile Include="GraphLinkedList.cpp" />
+    <ClCompile Include="LinkedList.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="File.h" />
+    <ClInclude Include="Graph.h" />
     <ClInclude Include="Graph2DArray.h" />
     <ClInclude Include="GraphLinkedList.h" />
+    <ClInclude Include="LinkedList.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
