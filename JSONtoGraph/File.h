@@ -8,7 +8,7 @@ namespace IO
 	static class File
 	{
 	public:
-		static int LoadFromList(const char* path, Graph2DArray& graph);
+		static int LoadFromList(const char* path, Graph::Graph2DArray& graph);
 
 	private:
 		static const char* ToString(const char* path);

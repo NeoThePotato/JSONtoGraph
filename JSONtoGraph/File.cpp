@@ -2,11 +2,13 @@
 #include <iostream>
 #include <fstream>
 #include "File.h"
+#include "Graph2DArray.h"
+#include "GraphLinkedList.h"
 using namespace std;
 
 namespace IO
 {
-    int File::LoadFromList(const char* path, Graph2DArray& graph)
+    int File::LoadFromList(const char* path, Graph::Graph2DArray& graph)
     {
         const char* json_str = ToString(path);
         return 0;
