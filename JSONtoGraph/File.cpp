@@ -1,22 +1,30 @@
-#include <stdio.h>;
+#include <string>
+#include <iostream>
+#include <fstream>
 #include "File.h"
+using namespace std;
 
 namespace IO
 {
     int File::LoadFromList(const char* path, Graph2DArray& graph)
     {
-        FILE* json_file;
-        fopen_s(&json_file, path, "r");
-        if (!json_file)
+        const char* json_str = ToString(path);
+        return 0;
+    }
+
+    const char* File::ToString(const char* path)
+    {
+        ifstream f(path);
+        if (!f.is_open())
         {
-            return 1;
+            return nullptr;
         }
-        int c;
-        while ((c = std::fgetc(json_file)) != EOF)
+        string text;
+        while (getline(f, text))
         {
-            printf("%c", c);
+            cout << text;
         }
-        fclose(json_file);
+        f.close();
         return 0;
     }
 }

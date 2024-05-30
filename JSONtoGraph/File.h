@@ -9,5 +9,8 @@ namespace IO
 	{
 	public:
 		static int LoadFromList(const char* path, Graph2DArray& graph);
+
+	private:
+		static const char* ToString(const char* path);
 	};
 }
