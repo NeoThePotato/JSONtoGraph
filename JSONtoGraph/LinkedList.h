@@ -7,12 +7,23 @@ public:
 	{
 		Node* next;
 		T val;
+
+		~Node()
+		{
+			if (next != nullptr)
+				delete next;
+		}
 	};
 
 private:
 	Node* _head;
 
 public:
+	~LinkedList()
+	{
+		delete _head;
+	}
+
 	Node* Insert(T val)
 	{
 		Node* last = GetLast();
