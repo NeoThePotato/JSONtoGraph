@@ -16,9 +16,14 @@ public:
 	Node* Insert(T val)
 	{
 		Node* last = GetLast();
+		return InsertAt(val, last);
+	}
+
+	Node* InsertAt(T val, Node* node)
+	{
 		Node* newNode = new Node();
 		newNode->val = val;
-		last->next = newNode;
+		node->next = newNode;
 		return newNode;
 	}
 
