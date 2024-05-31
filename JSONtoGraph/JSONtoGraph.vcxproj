@@ -133,7 +133,6 @@
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="Graph2DArray.cpp" />
     <ClCompile Include="GraphLinkedList.cpp" />
-    <ClCompile Include="LinkedList.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
