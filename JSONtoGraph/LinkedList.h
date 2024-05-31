@@ -27,6 +27,13 @@ public:
 	Node* Insert(T val)
 	{
 		Node* last = GetLast();
+		if (last == nullptr)
+		{
+			Node* newNode = new Node();
+			newNode->val = val;
+			_head = newNode;
+			return _head;
+		}
 		return InsertAt(val, last);
 	}
 
@@ -41,9 +48,12 @@ public:
 	Node* GetLast()
 	{
 		Node* current = _head;
-		while (current->next != nullptr)
+		if (current != nullptr)
 		{
-			current = current->next;
+			while (current->next != nullptr)
+			{
+				current = current->next;
+			}
 		}
 		return current;
 	}
