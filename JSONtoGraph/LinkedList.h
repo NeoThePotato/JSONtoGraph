@@ -13,13 +13,13 @@ private:
 	Node* _head;
 
 public:
-
-	void Insert(T val)
+	Node* Insert(T val)
 	{
 		Node* last = GetLast();
 		Node* newNode = new Node();
 		newNode->val = val;
 		last->next = newNode;
+		return newNode;
 	}
 
 	Node* GetLast()
