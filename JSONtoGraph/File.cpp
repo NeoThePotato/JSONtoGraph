@@ -8,10 +8,16 @@ using namespace std;
 
 namespace IO
 {
-    int File::LoadFromList(const char* path, Graph::Graph2DArray& graph)
+    bool File::LoadFromList(const char* path, Graph::Graph2DArray& graph)
     {
-        const char* json_str = ToString(path);
-        return 0;
+        auto str = ToString(path);
+        if (str != nullptr)
+        {
+            // TODO To graph
+        delete[] str;
+            return true;
+        }
+        return false;
     }
 
     const char* File::ToString(const char* path)
@@ -21,12 +27,12 @@ namespace IO
         {
             return nullptr;
         }
-        string text;
-        while (getline(f, text))
-        {
-            cout << text;
-        }
+        f.seekg(0, std::ios::end);
+        size_t str_size = f.tellg();
+        auto str = new char[str_size];
+        f.seekg(0);
+        f.read(str, str_size);
         f.close();
-        return 0;
+        return str;
     }
 }
