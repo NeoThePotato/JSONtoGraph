@@ -1,4 +1,3 @@
-#include <string>
 #include <fstream>
 #include "Graph2DArray.h"
 #include "GraphLinkedList.h"
@@ -6,15 +5,14 @@
 #pragma once
 namespace IO
 {
+	constexpr auto VERTICIES_KEY = "\"vertices\"";
+	constexpr auto EDGES_KEY = "\"edges\"";
+
 	static class File
 	{
 	public:
-		const char* VERTICIES_KEY = "vertices";
-		const char* EDGES_KEY = "edges";
+		static bool LoadFromJson(const char* path, Graph::Graph2DArray& graph);
 
-		static bool LoadFromList(const char* path, Graph::Graph2DArray& graph);
-
-	private:
-		static const char* ToString(const char* path);
+		static bool LoadFromJson(const char* path, Graph::GraphLinkedList& graph);
 	};
 }
