@@ -1,21 +1,20 @@
 #include <string>
-#include <iostream> // TODO Debug
-#include <vector> // TODO Debug
 #include <fstream>
 #include "File.h"
 #include "DynamicArray.h"
 #include "Graph2DArray.h"
 #include "GraphLinkedList.h"
-using namespace std;
+using std::string;
+using Collections::DynamicArray;
 
 namespace IO
 {
-    constexpr int START_INDEX = 0;
+    constexpr size_t START_INDEX = 0;
     constexpr size_t INDEX_SHIFT = 1;
 
     static const char* ToString(const char* path)
     {
-        ifstream f(path);
+        std::ifstream f(path);
         if (!f.is_open())
         {
             return nullptr;
@@ -62,7 +61,7 @@ namespace IO
         return nullptr;
     }
 
-    bool File::LoadFromJson(const char* path, Graph::Graph2DArray& graph)
+    bool File::LoadFromJson(const char* path, Graph::Graph* graph)
     {
         auto str = ToString(path);
         if (str == nullptr)
@@ -74,22 +73,9 @@ namespace IO
         delete[] str;
         if (arr == nullptr)
             return false;
-        // TODO To graph
+        for (size_t i = 0; i < arr->Length(); i++)
+            graph->AddVertex(arr->Get(i));
         delete arr;
         return true;
-    }
-
-    bool File::LoadFromJson(const char* path, Graph::GraphLinkedList& graph)
-    {
-        auto str = ToString(path);
-        if (str != nullptr)
-        {
-            auto arr = GetIntArray(str, VERTICIES_KEY);
-            delete[] str;
-            // TODO To graph
-            delete arr;
-            return true;
-        }
-        return false;
     }
 }

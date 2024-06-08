@@ -1,60 +1,64 @@
 #pragma once
-template <typename T>
-class LinkedList
+
+namespace Collections
 {
-public:
-	struct Node
+	template <typename T>
+	class LinkedList
 	{
-		Node* next;
-		T val;
-
-		~Node()
+	public:
+		struct Node
 		{
-			if (next != nullptr)
-				delete next;
+			Node* next;
+			T val;
+
+			~Node()
+			{
+				if (next != nullptr)
+					delete next;
+			}
+		};
+
+	private:
+		Node* _head;
+
+	public:
+		~LinkedList()
+		{
+			delete _head;
 		}
-	};
 
-private:
-	Node* _head;
+		Node* Insert(T val)
+		{
+			Node* last = GetLast();
+			if (last == nullptr)
+			{
+				Node* newNode = new Node();
+				newNode->val = val;
+				_head = newNode;
+				return _head;
+			}
+			return InsertAt(val, last);
+		}
 
-public:
-	~LinkedList()
-	{
-		delete _head;
-	}
-
-	Node* Insert(T val)
-	{
-		Node* last = GetLast();
-		if (last == nullptr)
+		Node* InsertAt(T val, Node* node)
 		{
 			Node* newNode = new Node();
 			newNode->val = val;
-			_head = newNode;
-			return _head;
+			node->next = newNode;
+			return newNode;
 		}
-		return InsertAt(val, last);
-	}
 
-	Node* InsertAt(T val, Node* node)
-	{
-		Node* newNode = new Node();
-		newNode->val = val;
-		node->next = newNode;
-		return newNode;
-	}
-
-	Node* GetLast()
-	{
-		Node* current = _head;
-		if (current != nullptr)
+		Node* GetLast()
 		{
-			while (current->next != nullptr)
+			Node* current = _head;
+			if (current != nullptr)
 			{
-				current = current->next;
+				while (current->next != nullptr)
+				{
+					current = current->next;
+				}
 			}
+			return current;
 		}
-		return current;
-	}
-};
+	};
+}
