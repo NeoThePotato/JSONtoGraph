@@ -8,6 +8,8 @@ using namespace std;
 
 namespace IO
 {
+    constexpr int FILE_START = 0;
+
     bool File::LoadFromList(const char* path, Graph::Graph2DArray& graph)
     {
         auto str = ToString(path);
@@ -27,10 +29,10 @@ namespace IO
         {
             return nullptr;
         }
-        f.seekg(0, std::ios::end);
+        f.seekg(FILE_START, std::ios::end);
         size_t str_size = f.tellg();
         auto str = new char[str_size];
-        f.seekg(0);
+        f.seekg(FILE_START);
         f.read(str, str_size);
         f.close();
         return str;
