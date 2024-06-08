@@ -136,6 +136,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DynamicArray.h" />
     <ClInclude Include="File.h" />
     <ClInclude Include="Graph.h" />
     <ClInclude Include="Graph2DArray.h" />
