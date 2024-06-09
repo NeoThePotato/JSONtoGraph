@@ -11,6 +11,11 @@ bool Graph2DArray::AddVertex(Vertex)
     return false;
 }
 
+size_t Graph2DArray::Graph2DArray::VertexCount()
+{
+    return size_t();
+}
+
 Edge Graph2DArray::EdgeAt(size_t)
 {
     return Edge();
@@ -19,4 +24,9 @@ Edge Graph2DArray::EdgeAt(size_t)
 bool Graph2DArray::AddEdge(Edge)
 {
     return false;
+}
+
+size_t Graph2DArray::Graph2DArray::EdgeCount()
+{
+    return size_t();
 }
