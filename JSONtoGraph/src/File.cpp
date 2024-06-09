@@ -45,35 +45,66 @@ namespace IO
         return index;
     }
 
-    static bool GetArrayRangeIndicies(const char* source, const char* key, size_t& start, size_t& end)
+    static size_t FindNextComma(const char* source, size_t start)
+    {
+        int depth = BASELINE_DEPTH;
+        size_t index;
+        for (index = start; source[index] != '\0'; index++)
+        {
+            if (source[index] == '[')
+                depth++;
+            else if (source[index] == ']')
+                depth--;
+            if (source[index] == ',' && depth <= BASELINE_DEPTH)
+                break;
+        }
+        return index;
+    }
+
+    static bool GetArrayStartIndex(const char* source, const char* key, size_t& start)
     {
         size_t keyIndex = string(source).find(key);
         if (keyIndex == string::npos)
             return false;
         start = string(source + keyIndex).find('[') + keyIndex;
-        end = FindClosingBracket(source, start);
         return true;
+    }
+
+    static bool GetArrayRangeIndicies(const char* source, const char* key, size_t& start, size_t& end)
+    {
+        if (GetArrayStartIndex(source, key, start))
+        {
+            end = FindClosingBracket(source, start);
+            return true;
+        }
+        return false;
+    }
+
+    static DynamicArray<string>* GetStringArray(const char* source, const size_t bracketStartIndex)
+    {
+        size_t bracketEndIndex = FindClosingBracket(source, bracketStartIndex);
+        auto fullArrayString = string(source).substr(bracketStartIndex, bracketEndIndex - bracketStartIndex + INDEX_SHIFT);
+        fullArrayString.erase(remove_if(fullArrayString.begin(), fullArrayString.end(), isspace), fullArrayString.end()); // Strip spaces
+        fullArrayString = fullArrayString.substr(fullArrayString.find('[') + INDEX_SHIFT, fullArrayString.rfind(']') - INDEX_SHIFT); // Strip brackets
+
+        auto arr = new DynamicArray<string>();
+        size_t strStart = START_INDEX, strEnd;
+        do
+        {
+            strEnd = FindNextComma(fullArrayString.c_str(), strStart) + INDEX_SHIFT;
+            string subString = fullArrayString.substr(strStart, strEnd - strStart - INDEX_SHIFT);
+            arr->Append(subString);
+            strStart = strEnd;
+        } while (strEnd < fullArrayString.size());
+        return arr;
     }
 
     static DynamicArray<string>* GetStringArray(const char* source, const char* key)
     {
-        size_t arrayStartIndex, arrayEndIndex;
-        if (GetArrayRangeIndicies(source, key, arrayStartIndex, arrayEndIndex))
+        size_t arrayStartIndex;
+        if (GetArrayStartIndex(source, key, arrayStartIndex))
         {
-            auto fullArrayString = string(source + arrayStartIndex, ++arrayEndIndex);
-            fullArrayString.erase(remove_if(fullArrayString.begin(), fullArrayString.end(), isspace), fullArrayString.end()); // Strip spaces
-            fullArrayString = fullArrayString.substr(fullArrayString.find('[') + INDEX_SHIFT, fullArrayString.rfind(']') - INDEX_SHIFT); // Strip brackets
-
-            auto arr = new DynamicArray<string>();
-            size_t strStart = START_INDEX, strEnd;
-            do
-            {
-                strEnd = fullArrayString.find(',', strStart) + INDEX_SHIFT;
-                string subString = fullArrayString.substr(strStart, strEnd - strStart - INDEX_SHIFT);
-                arr->Append(subString);
-                strStart = strEnd;
-            } while (strEnd != START_INDEX);
-            return arr;
+            return GetStringArray(source, arrayStartIndex);
         }
         return nullptr;
     }
@@ -87,7 +118,6 @@ namespace IO
         DynamicArray<T>* tArr = new DynamicArray<T>(strArr->Length());
         for (size_t i = START_INDEX; i < strArr->Length(); i++)
             tArr->Append(conversionFunc(strArr->Get(i)));
-        delete strArr;
         return tArr;
     }
 
@@ -96,32 +126,22 @@ namespace IO
         return std::stoi(source);
     }
 
+    static Graph::Edge StrToEdge(const string& source)
+    {
+        auto arr = GetStringArray(source.c_str(), START_INDEX);
+        Graph::Edge edge{ StrToInt(arr->Get(0)), StrToInt(arr->Get(1)) }; // TODO Implement
+        delete arr;
+        return edge;
+    }
+
     static DynamicArray<int>* GetIntArray(const char* source, const char* key)
     {
         return GetTArray<int>(source, key, StrToInt);
     }
 
-    static DynamicArray<int[2]>* GetInt2DArray(const char* source, const char* key)
+    static DynamicArray<Graph::Edge>* GetEdgeArray(const char* source, const char* key)
     {
-        size_t arrayStartIndex, arrayEndIndex;
-        if (GetArrayRangeIndicies(source, key, arrayStartIndex, arrayEndIndex))
-        {
-            auto arrayString = string(source + arrayStartIndex, ++arrayEndIndex);
-            arrayString.erase(remove_if(arrayString.begin(), arrayString.end(), isspace), arrayString.end()); // Strip spaces
-            arrayString = arrayString.substr(arrayString.find('[') + INDEX_SHIFT, arrayString.find(']') - INDEX_SHIFT); // Strip brackets
-
-            auto arr = new DynamicArray<int[2]>();
-            size_t intStart = START_INDEX, intEnd;
-            do
-            {
-                intEnd = arrayString.find(',', intStart) + INDEX_SHIFT;
-                string numberStr = arrayString.substr(intStart, intEnd - intStart - INDEX_SHIFT);
-                arr->Append(stoi(numberStr));
-                intStart = intEnd;
-            } while (intEnd != START_INDEX);
-            return arr;
-        }
-        return nullptr;
+        return GetTArray<Graph::Edge>(source, key, StrToEdge);
     }
 
     bool File::LoadFromJson(const char* path, Graph::Graph* graph)
@@ -137,21 +157,18 @@ namespace IO
         auto arr = GetIntArray(str, VERTICIES_KEY);
         if (arr == nullptr)
             return false;
-        for (size_t i = 0; i < arr->Length(); i++)
+        for (size_t i = START_INDEX; i < arr->Length(); i++)
             graph->AddVertex(arr->Get(i));
         delete arr;
 
         // Edges
-        auto arr2D = GetInt2DArray(str, EDGES_KEY);
+        auto arrEdge = GetEdgeArray(str, EDGES_KEY);
         delete[] str;
-        if (arr == nullptr)
+        if (arrEdge == nullptr)
             return false;
-        for (size_t i = 0; i < arr2D->Length(); i++)
-        {
-            Graph::Edge edge{arr2D->Get(i)[0], arr2D->Get(i)[1]};
-            graph->AddEdge(Graph::Edge {arr2D->Get(i)[0], arr2D->Get(i)[1]});
-        }
-        delete arr;
+        for (size_t i = START_INDEX; i < arrEdge->Length(); i++)
+            graph->AddEdge(arrEdge->Get(i));
+        delete arrEdge;
         return true;
     }
 }
