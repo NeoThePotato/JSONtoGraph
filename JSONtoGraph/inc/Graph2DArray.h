@@ -1,13 +1,15 @@
 #pragma once
 #include "Graph.h"
+#include "DynamicArray.h"
+using Collections::DynamicArray;
 
 namespace Graph
 {
 	class Graph2DArray : public Graph
 	{
 	private:
-		Vertex* vertices;
-		Edge* edges;
+		DynamicArray<Vertex> _vertices;
+		DynamicArray<Edge> _edges;
 
 	public:
 		// Inherited via Graph
