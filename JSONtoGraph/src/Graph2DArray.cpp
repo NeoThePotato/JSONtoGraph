@@ -14,12 +14,9 @@ Vertex Graph2DArray::VertexAt(size_t index)
     return _vertices.Get(index);
 }
 
-bool Graph2DArray::AddVertex(Vertex vertex)
+void Graph2DArray::AddVertex(Vertex vertex)
 {
-    if (_vertices.Exists(vertex))
-        return false;
     _vertices.Append(vertex);
-    return true;
 }
 
 size_t Graph2DArray::Graph2DArray::VertexCount()
@@ -32,12 +29,9 @@ Edge Graph2DArray::EdgeAt(size_t index)
     return _edges.Get(index);
 }
 
-bool Graph2DArray::AddEdge(Edge edge)
+void Graph2DArray::AddEdge(Edge edge)
 {
-    if (_edges.Exists(edge))
-        return false;
     _edges.Append(edge);
-    return true;
 }
 
 size_t Graph2DArray::Graph2DArray::EdgeCount()

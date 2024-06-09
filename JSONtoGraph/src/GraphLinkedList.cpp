@@ -3,12 +3,12 @@ using namespace Graph;
 
 Vertex GraphLinkedList::VertexAt(size_t index)
 {
-    _vertices.Get(index);
+    return _vertices.Get(index);
 }
 
-bool GraphLinkedList::AddVertex(Vertex vertex)
+void GraphLinkedList::AddVertex(Vertex vertex)
 {
-    _vertices.Insert(vertex);
+    return _vertices.Insert(vertex);
 }
 
 size_t GraphLinkedList::GraphLinkedList::VertexCount()
@@ -18,12 +18,12 @@ size_t GraphLinkedList::GraphLinkedList::VertexCount()
 
 Edge GraphLinkedList::EdgeAt(size_t index)
 {
-    _edges.Get(index);
+    return _edges.Get(index);
 }
 
-bool GraphLinkedList::AddEdge(Edge edge)
+void GraphLinkedList::AddEdge(Edge edge)
 {
-    _edges.Insert(edge);
+    return _edges.Insert(edge);
 }
 
 size_t GraphLinkedList::GraphLinkedList::EdgeCount()
