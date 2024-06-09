@@ -65,5 +65,8 @@
     <ClInclude Include="inc\GraphLinkedList.h">
       <Filter>Header Files\Graph</Filter>
     </ClInclude>
+    <ClInclude Include="inc\Queue.h">
+      <Filter>Header Files\Collections</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
