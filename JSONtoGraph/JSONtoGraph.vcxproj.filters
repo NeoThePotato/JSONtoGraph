@@ -68,5 +68,8 @@
     <ClInclude Include="inc\Queue.h">
       <Filter>Header Files\Collections</Filter>
     </ClInclude>
+    <ClInclude Include="inc\Set.h">
+      <Filter>Header Files\Collections</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

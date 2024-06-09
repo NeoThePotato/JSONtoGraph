@@ -148,6 +148,7 @@
     <ClInclude Include="inc\GraphLinkedList.h" />
     <ClInclude Include="inc\LinkedList.h" />
     <ClInclude Include="inc\Queue.h" />
+    <ClInclude Include="inc\Set.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
