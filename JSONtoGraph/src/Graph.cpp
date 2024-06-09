@@ -1,5 +1,6 @@
 #include "Graph.h"
-using Collections::DynamicArray;
+#include "Queue.h"
+using Collections::DynamicArray, Collections::Queue;
 
 namespace Graph
 {
@@ -15,6 +16,18 @@ namespace Graph
 		return false;
 	}
 
+	void Graph::GetNeighbors(Vertex v, DynamicArray<Edge>* out) const
+	{
+		if (!Exists(v))
+			return;
+		for (size_t i = START_INDEX; i < EdgeCount(); i++)
+		{
+			Edge edge = EdgeAt(i);
+			if (edge.Contains(v))
+				out->Append(edge);
+		}
+	}
+
 	bool Graph::Exists(Edge e) const
 	{
 		for (size_t i = START_INDEX; i < EdgeCount(); i++)
@@ -25,8 +38,20 @@ namespace Graph
 		return false;
 	}
 
-	bool Graph::ShortestPath(DynamicArray<Edge>* out, Vertex v1, Vertex v2) const {
-		// TODO Implement
+	void Graph::BreadthFirstSearch(Vertex start, Vertex end, DynamicArray<Edge>* out) const
+	{
+		auto q = new Queue<Vertex>(VertexCount());
+		q->Enqueue(start);
+
+		delete q;
+	}
+
+	bool Graph::ShortestPath(Vertex start, Vertex end, DynamicArray<Vertex>* out) const
+	{
+		if (Exists(start) && Exists(end))
+		{
+			// TODO Implement
+		}
 		return false;
 	}
 }
