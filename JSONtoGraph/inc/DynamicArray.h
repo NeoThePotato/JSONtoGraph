@@ -97,25 +97,6 @@ namespace Collections
             return _internalArray[index];
         }
 
-        bool Exists(T compareTo) const
-        {
-            size_t _;
-            return Exists(compareTo, &_);
-        }
-
-        bool Exists(T compareTo, size_t* index) const
-        {
-            for (size_t i = START_INDEX; i < _size; i++)
-            {
-                if (_internalArray[i] == compareTo)
-                {
-                    *index = i;
-                    return true;
-                }
-            }
-            return false;
-        }
-
         T* ToArray() const
         {
             T* arr = new T[_size];
