@@ -1,32 +1,46 @@
 #include "Graph2DArray.h"
 using namespace Graph;
 
-Vertex Graph2DArray::VertexAt(size_t)
+constexpr size_t DEFAULT_CAPACITY = 5;
+
+Graph2DArray::Graph2DArray(size_t vertexCapacity = DEFAULT_CAPACITY, size_t edgeCapacity = DEFAULT_CAPACITY)
 {
-    return Vertex();
+    _vertices = DynamicArray<Vertex>(vertexCapacity);
+    _edges = DynamicArray<Edge>(edgeCapacity);
 }
 
-bool Graph2DArray::AddVertex(Vertex)
+Vertex Graph2DArray::VertexAt(size_t index)
 {
-    return false;
+    return _vertices.Get(index);
+}
+
+bool Graph2DArray::AddVertex(Vertex vertex)
+{
+    if (_vertices.Exists(vertex))
+        return false;
+    _vertices.Append(vertex);
+    return true;
 }
 
 size_t Graph2DArray::Graph2DArray::VertexCount()
 {
-    return size_t();
+    return _vertices.Length();
 }
 
-Edge Graph2DArray::EdgeAt(size_t)
+Edge Graph2DArray::EdgeAt(size_t index)
 {
-    return Edge();
+    return _edges.Get(index);
 }
 
-bool Graph2DArray::AddEdge(Edge)
+bool Graph2DArray::AddEdge(Edge edge)
 {
-    return false;
+    if (_edges.Exists(edge))
+        return false;
+    _edges.Append(edge);
+    return true;
 }
 
 size_t Graph2DArray::Graph2DArray::EdgeCount()
 {
-    return size_t();
+    return _edges.Length();
 }

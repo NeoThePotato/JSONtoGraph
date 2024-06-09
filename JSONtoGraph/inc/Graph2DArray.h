@@ -12,6 +12,7 @@ namespace Graph
 		DynamicArray<Edge> _edges;
 
 	public:
+		Graph2DArray(size_t vertexCapacity, size_t edgeCapacity);
 		// Inherited via Graph
 		Vertex VertexAt(size_t index) override;
 		bool AddVertex(Vertex vertex) override;
