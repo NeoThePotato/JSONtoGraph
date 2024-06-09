@@ -13,11 +13,11 @@ namespace Graph
 
 	public:
 		// Inherited via Graph
-		Vertex VertexAt(size_t index) override;
+		Vertex VertexAt(size_t index) const override;
 		void AddVertex(Vertex vertex) override;
-		size_t VertexCount() override;
-		Edge EdgeAt(size_t index) override;
+		size_t VertexCount() const override;
+		Edge EdgeAt(size_t index) const override;
 		void AddEdge(Edge edge) override;
-		size_t EdgeCount() override;
+		size_t EdgeCount() const override;
 	};
 }
