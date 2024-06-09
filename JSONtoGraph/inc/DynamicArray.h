@@ -8,7 +8,7 @@ namespace Collections
     constexpr size_t DEFAULT_CAPACITY = 1;
     constexpr size_t GROWTH_COEFFICIENT = 2;
 
-    template <typename T>
+    template <class T>
     class DynamicArray
     {
     private:
@@ -81,29 +81,29 @@ namespace Collections
             }
         }
 
-        const void CopyTo(T* target)
+        void CopyTo(T* target) const
         {
             for (size_t i = START_INDEX; i < _size; i++)
                 target[i] = _internalArray[i];
         }
 
-        const size_t Length()
+        size_t Length() const
         {
             return _size;
         }
 
-        const T Get(size_t index)
+        T Get(size_t index) const
         {
             return _internalArray[index];
         }
 
-        const bool Exists(T compareTo)
+        bool Exists(T compareTo) const
         {
             size_t _;
             return Exists(compareTo, &_);
         }
 
-        const bool Exists(T compareTo, size_t* index)
+        bool Exists(T compareTo, size_t* index) const
         {
             for (size_t i = START_INDEX; i < _size; i++)
             {
@@ -116,7 +116,7 @@ namespace Collections
             return false;
         }
 
-        T* ToArray()
+        T* ToArray() const
         {
             T* arr = new T[_size];
             CopyTo(arr);
