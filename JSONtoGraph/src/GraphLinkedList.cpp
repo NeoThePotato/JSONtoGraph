@@ -1,6 +1,12 @@
 #include "GraphLinkedList.h"
 using namespace Graph;
 
+GraphLinkedList::GraphLinkedList()
+{
+    _vertices = LinkedList<Vertex>();
+    _edges = LinkedList<Edge>();
+}
+
 Vertex GraphLinkedList::VertexAt(size_t index) const
 {
     return _vertices.Get(index);

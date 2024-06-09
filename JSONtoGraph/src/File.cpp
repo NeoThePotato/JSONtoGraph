@@ -25,6 +25,7 @@ namespace IO
         auto str = new char[str_size];
         f.seekg(START_INDEX);
         f.read(str, str_size);
+        str[f.gcount()] = '\0';
         f.close();
         return str;
     }

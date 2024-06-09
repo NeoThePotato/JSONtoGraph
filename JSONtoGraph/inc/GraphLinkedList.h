@@ -13,6 +13,7 @@ namespace Graph
 
 	public:
 		// Inherited via Graph
+		GraphLinkedList();
 		Vertex VertexAt(size_t index) const override;
 		void AddVertex(Vertex vertex) override;
 		size_t VertexCount() const override;

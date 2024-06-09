@@ -5,7 +5,7 @@ namespace Collections
 {
     constexpr size_t START_INDEX = 0;
     constexpr size_t INDEX_SHIFT = 1;
-    constexpr size_t DEFAULT_CAPACITY = 1;
+    constexpr size_t DEFAULT_CAPACITY = 5;
     constexpr size_t GROWTH_COEFFICIENT = 2;
 
     template <class T>
@@ -23,6 +23,12 @@ namespace Collections
             CopyTo(temp);
             delete[] _internalArray;
             _internalArray = temp;
+        }
+
+        void CopyTo(T* target) const
+        {
+            for (size_t i = START_INDEX; i < _size; i++)
+                target[i] = _internalArray[i];
         }
 
     public:
@@ -44,7 +50,6 @@ namespace Collections
                 Resize();
             _internalArray[_size] = element;
             _size++;
-
         }
 
         void Remove(size_t pos)
@@ -79,12 +84,6 @@ namespace Collections
                 else
                     _internalArray[i] = _internalArray[i - INDEX_SHIFT];
             }
-        }
-
-        void CopyTo(T* target) const
-        {
-            for (size_t i = START_INDEX; i < _size; i++)
-                target[i] = _internalArray[i];
         }
 
         size_t Length() const

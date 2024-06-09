@@ -70,9 +70,9 @@ namespace Collections
 			Node* last = GetLast();
 			if (last == nullptr)
 			{
-				Node* newNode = new Node();
-				newNode->val = val;
-				_head = newNode;
+				last = new Node();
+				last->val = val;
+				_head = last;
 			}
 			InsertAt(val, last);
 		}
