@@ -61,6 +61,29 @@ namespace IO
         return nullptr;
     }
 
+    static DynamicArray<int[2]>* GetInt2DArray(const char* source, const char* key)
+    {
+        size_t arrayStartIndex, arrayEndIndex;
+        if (GetArrayRangeIndicies(source, key, arrayStartIndex, arrayEndIndex))
+        {
+            auto arrayString = string(source + arrayStartIndex, ++arrayEndIndex);
+            arrayString.erase(remove_if(arrayString.begin(), arrayString.end(), isspace), arrayString.end()); // Strip spaces
+            arrayString = arrayString.substr(arrayString.find('[') + INDEX_SHIFT, arrayString.find(']') - INDEX_SHIFT); // Strip brackets
+
+            auto arr = new DynamicArray<int[2]>();
+            size_t intStart = START_INDEX, intEnd;
+            do
+            {
+                intEnd = arrayString.find(',', intStart) + INDEX_SHIFT;
+                string numberStr = arrayString.substr(intStart, intEnd - intStart - INDEX_SHIFT);
+                arr->Append(stoi(numberStr));
+                intStart = intEnd;
+            } while (intEnd != START_INDEX);
+            return arr;
+        }
+        return nullptr;
+    }
+
     bool File::LoadFromJson(const char* path, Graph::Graph* graph)
     {
         auto str = ToString(path);
@@ -69,12 +92,25 @@ namespace IO
             delete[] str;
             return false;
         }
+
+        // Vertices
         auto arr = GetIntArray(str, VERTICIES_KEY);
-        delete[] str;
         if (arr == nullptr)
             return false;
         for (size_t i = 0; i < arr->Length(); i++)
             graph->AddVertex(arr->Get(i));
+        delete arr;
+
+        // Edges
+        auto arr2D = GetInt2DArray(str, EDGES_KEY);
+        delete[] str;
+        if (arr == nullptr)
+            return false;
+        for (size_t i = 0; i < arr2D->Length(); i++)
+        {
+            Graph::Edge edge{arr2D->Get(i)[0], arr2D->Get(i)[1]};
+            graph->AddEdge(Graph::Edge {arr2D->Get(i)[0], arr2D->Get(i)[1]});
+        }
         delete arr;
         return true;
     }
