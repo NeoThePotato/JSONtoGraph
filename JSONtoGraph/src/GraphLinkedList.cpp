@@ -3,30 +3,30 @@ using namespace Graph;
 
 Vertex GraphLinkedList::VertexAt(size_t index)
 {
-    return Vertex();
+    _vertices.Get(index);
 }
 
 bool GraphLinkedList::AddVertex(Vertex vertex)
 {
-    return false;
+    _vertices.Insert(vertex);
 }
 
 size_t GraphLinkedList::GraphLinkedList::VertexCount()
 {
-    return size_t();
+    return _vertices.Count();
 }
 
 Edge GraphLinkedList::EdgeAt(size_t index)
 {
-    return Edge();
+    _edges.Get(index);
 }
 
 bool GraphLinkedList::AddEdge(Edge edge)
 {
-    return false;
+    _edges.Insert(edge);
 }
 
 size_t GraphLinkedList::GraphLinkedList::EdgeCount()
 {
-    return size_t();
+    return _edges.Count();
 }
