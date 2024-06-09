@@ -38,27 +38,50 @@ namespace IO
         return true;
     }
 
-    static DynamicArray<int>* GetIntArray(const char* source, const char* key)
+    static DynamicArray<string>* GetStringArray(const char* source, const char* key)
     {
         size_t arrayStartIndex, arrayEndIndex;
         if (GetArrayRangeIndicies(source, key, arrayStartIndex, arrayEndIndex))
         {
-            auto arrayString = string(source + arrayStartIndex, ++arrayEndIndex);
-            arrayString.erase(remove_if(arrayString.begin(), arrayString.end(), isspace), arrayString.end()); // Strip spaces
-            arrayString = arrayString.substr(arrayString.find('[') + INDEX_SHIFT, arrayString.find(']') - INDEX_SHIFT); // Strip brackets
+            auto fullArrayString = string(source + arrayStartIndex, ++arrayEndIndex);
+            fullArrayString.erase(remove_if(fullArrayString.begin(), fullArrayString.end(), isspace), fullArrayString.end()); // Strip spaces
+            fullArrayString = fullArrayString.substr(fullArrayString.find('[') + INDEX_SHIFT, fullArrayString.rfind(']') - INDEX_SHIFT); // Strip brackets
 
-            auto arr = new DynamicArray<int>();
-            size_t intStart = START_INDEX, intEnd;
+            auto arr = new DynamicArray<string>();
+            size_t strStart = START_INDEX, strEnd;
             do
             {
-                intEnd = arrayString.find(',', intStart) + INDEX_SHIFT;
-                string numberStr = arrayString.substr(intStart, intEnd - intStart - INDEX_SHIFT);
-                arr->Append(stoi(numberStr));
-                intStart = intEnd;
-            } while (intEnd != START_INDEX);
+                strEnd = fullArrayString.find(',', strStart) + INDEX_SHIFT;
+                string subString = fullArrayString.substr(strStart, strEnd - strStart - INDEX_SHIFT);
+                arr->Append(subString);
+                strStart = strEnd;
+            } while (strEnd != START_INDEX);
             return arr;
         }
         return nullptr;
+    }
+
+    template <class T>
+    static DynamicArray<T>* GetTArray(const char* source, const char* key, T (*conversionFunc)(const string&))
+    {
+        auto strArr = GetStringArray(source, key);
+        if (strArr == nullptr)
+            return nullptr;
+        DynamicArray<T>* tArr = new DynamicArray<T>(strArr->Length());
+        for (size_t i = START_INDEX; i < strArr->Length(); i++)
+            tArr->Append(conversionFunc(strArr->Get(i)));
+        delete strArr;
+        return tArr;
+    }
+
+    static int StrToInt(const string& source)
+    {
+        return std::stoi(source);
+    }
+
+    static DynamicArray<int>* GetIntArray(const char* source, const char* key)
+    {
+        return GetTArray<int>(source, key, StrToInt);
     }
 
     static DynamicArray<int[2]>* GetInt2DArray(const char* source, const char* key)
