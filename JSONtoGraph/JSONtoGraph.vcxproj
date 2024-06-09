@@ -70,6 +70,9 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <PublicIncludeDirectories>$(ProjectDir)inc;$(ProjectDir)src;$(PublicIncludeDirectories)</PublicIncludeDirectories>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -106,6 +109,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <AdditionalIncludeDirectories>$(ProjectDir)inc;$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -129,19 +133,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="File.cpp" />
-    <ClCompile Include="Graph.cpp" />
-    <ClCompile Include="Graph2DArray.cpp" />
-    <ClCompile Include="GraphLinkedList.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="src\File.cpp" />
+    <ClCompile Include="src\Graph.cpp" />
+    <ClCompile Include="src\Graph2DArray.cpp" />
+    <ClCompile Include="src\GraphLinkedList.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DynamicArray.h" />
-    <ClInclude Include="File.h" />
-    <ClInclude Include="Graph.h" />
-    <ClInclude Include="Graph2DArray.h" />
-    <ClInclude Include="GraphLinkedList.h" />
-    <ClInclude Include="LinkedList.h" />
+    <ClInclude Include="inc\DynamicArray.h" />
+    <ClInclude Include="inc\File.h" />
+    <ClInclude Include="inc\Graph.h" />
+    <ClInclude Include="inc\Graph2DArray.h" />
+    <ClInclude Include="inc\GraphLinkedList.h" />
+    <ClInclude Include="inc\LinkedList.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

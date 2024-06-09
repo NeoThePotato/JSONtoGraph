@@ -16,42 +16,54 @@
     <Filter Include="Header Files\Graph">
       <UniqueIdentifier>{79a82409-cc3a-4ca9-9d3f-e85e6855ddb1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\IO">
+      <UniqueIdentifier>{0725aaa1-8337-4640-a18e-d2df7e2b9299}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Collections">
+      <UniqueIdentifier>{610f0e83-85c9-497d-8d9c-03e98e61419c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\IO">
+      <UniqueIdentifier>{4e65cbaa-a165-45b9-afea-797f6be5fae7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graph">
+      <UniqueIdentifier>{0330619f-8196-44a4-bc67-7ac7db0ba257}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="File.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\Graph.cpp">
+      <Filter>Source Files\Graph</Filter>
     </ClCompile>
-    <ClCompile Include="Graph2DArray.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\Graph2DArray.cpp">
+      <Filter>Source Files\Graph</Filter>
     </ClCompile>
-    <ClCompile Include="GraphLinkedList.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\GraphLinkedList.cpp">
+      <Filter>Source Files\Graph</Filter>
     </ClCompile>
-    <ClCompile Include="Graph.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\File.cpp">
+      <Filter>Source Files\IO</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="File.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="inc\DynamicArray.h">
+      <Filter>Header Files\Collections</Filter>
     </ClInclude>
-    <ClInclude Include="LinkedList.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="inc\LinkedList.h">
+      <Filter>Header Files\Collections</Filter>
     </ClInclude>
-    <ClInclude Include="Graph.h">
+    <ClInclude Include="inc\File.h">
+      <Filter>Header Files\IO</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Graph.h">
       <Filter>Header Files\Graph</Filter>
     </ClInclude>
-    <ClInclude Include="Graph2DArray.h">
+    <ClInclude Include="inc\Graph2DArray.h">
       <Filter>Header Files\Graph</Filter>
     </ClInclude>
-    <ClInclude Include="GraphLinkedList.h">
+    <ClInclude Include="inc\GraphLinkedList.h">
       <Filter>Header Files\Graph</Filter>
-    </ClInclude>
-    <ClInclude Include="DynamicArray.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
