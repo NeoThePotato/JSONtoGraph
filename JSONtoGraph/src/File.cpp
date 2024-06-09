@@ -11,6 +11,7 @@ namespace IO
 {
     constexpr size_t START_INDEX = 0;
     constexpr size_t INDEX_SHIFT = 1;
+    constexpr int BASELINE_DEPTH = 0;
 
     static const char* ToString(const char* path)
     {
@@ -28,13 +29,29 @@ namespace IO
         return str;
     }
 
+    static size_t FindClosingBracket(const char* source, size_t start)
+    {
+        int depth = BASELINE_DEPTH;
+        size_t index;
+        for (index = start; source[index] != '\0'; index++)
+        {
+            if (source[index] == '[')
+                depth++;
+            else if (source[index] == ']')
+                depth--;
+            if (depth <= BASELINE_DEPTH)
+                break;
+        }
+        return index;
+    }
+
     static bool GetArrayRangeIndicies(const char* source, const char* key, size_t& start, size_t& end)
     {
         size_t keyIndex = string(source).find(key);
         if (keyIndex == string::npos)
             return false;
         start = string(source + keyIndex).find('[') + keyIndex;
-        end = string(source + start).find(']');
+        end = FindClosingBracket(source, start);
         return true;
     }
 
