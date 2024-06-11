@@ -40,8 +40,10 @@ namespace Graph
 		return false;
 	}
 
-	void Graph::BreadthFirstSearch(Vertex start, DynamicArray<Vertex>* out) const
+	void Graph::BreadthFirstSearch(Vertex start, DynamicArray<Vertex>* parents) const
 	{
+		parents->SetAll(INVALID_VERTEX, VertexCount());
+		// TODO Consider stack-allocating these
 		auto visitQueue = new Queue<Vertex>(VertexCount());
 		auto visited = new Set<Vertex>(VertexCount());
 		auto neighbors = new DynamicArray<Vertex>();
@@ -50,8 +52,8 @@ namespace Graph
 
 		while (!visitQueue->Empty())
 		{
-			auto node = visitQueue->Dequeue();
-			GetNeighbors(node, neighbors);
+			auto current = visitQueue->Dequeue();
+			GetNeighbors(current, neighbors);
 
 			for (size_t n = START_INDEX; n < neighbors->Length(); n++)
 			{
@@ -59,7 +61,7 @@ namespace Graph
 				if (visited->TryAdd(next)) // If not visited yet
 				{
 					visitQueue->Enqueue(next);
-					out->Insert(next, node);
+					parents->Insert(next, current);
 				}
 			}
 		}
@@ -68,19 +70,22 @@ namespace Graph
 		delete neighbors;
 	}
 
-	void Graph::ReconstructPath(Vertex start, Vertex end, DynamicArray<Vertex>* path) const
+	bool Graph::ReconstructPath(Vertex start, Vertex end, DynamicArray<Vertex>* path) const
 	{
-
+		auto oldPath = new DynamicArray<Vertex>(path);
+		path->Clear();
+		for (Vertex current = end; current != INVALID_VERTEX; current = oldPath->Get(current))
+			path->Insert(current, 0);
+		delete oldPath;
+		return path->Get(0) == start;
 	}
 
 	bool Graph::ShortestPath(Vertex start, Vertex end, DynamicArray<Vertex>* out) const
 	{
 		if (Exists(start) && Exists(end))
 		{
-			auto path = new DynamicArray<Vertex>(VertexCount());
 			BreadthFirstSearch(start, out);
-
-			delete path;
+			return ReconstructPath(start, end, out);
 		}
 		return false;
 	}

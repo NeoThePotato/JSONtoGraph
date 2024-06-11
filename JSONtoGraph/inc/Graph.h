@@ -51,6 +51,6 @@ namespace Graph
 
 	private:
 		void BreadthFirstSearch(Vertex, DynamicArray<Vertex>*) const;
-		void ReconstructPath(Vertex, Vertex, DynamicArray<Vertex>*) const;
+		bool ReconstructPath(Vertex, Vertex, DynamicArray<Vertex>*) const;
 	};
 }
