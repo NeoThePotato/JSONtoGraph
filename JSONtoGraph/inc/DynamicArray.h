@@ -86,6 +86,10 @@ namespace Collections
             }
         }
 
+        void Clear() {
+            _size = 0;
+        }
+
         size_t Length() const
         {
             return _size;
