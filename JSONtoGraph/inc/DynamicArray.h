@@ -13,21 +13,34 @@ namespace Collections
     {
     private:
         T* _internalArray;
-        size_t _size;
+        size_t _length;
         size_t _capacity;
 
         void Resize()
         {
-            _capacity *= GROWTH_COEFFICIENT;
+            Resize(_capacity * GROWTH_COEFFICIENT);
+        }
+
+        void Resize(size_t newSize)
+        {
+            _capacity *= newSize;
+            _length = size > _capacity ? _capacity : _length;
             T* temp = new T[_capacity];
             CopyTo(temp);
             delete[] _internalArray;
             _internalArray = temp;
         }
 
+        void SetLength(size_t newLength)
+        {
+            if (newLength > _capacity)
+                Resize(newLength);
+            _length = newLength;
+        }
+
         void CopyTo(T* target) const
         {
-            for (size_t i = START_INDEX; i < _size; i++)
+            for (size_t i = START_INDEX; i < _length; i++)
                 target[i] = _internalArray[i];
         }
 
@@ -36,7 +49,15 @@ namespace Collections
         {
             _capacity = capacity;
             _internalArray = new T[_capacity];
-            _size = START_INDEX;
+            _length = START_INDEX;
+        }
+
+        DynamicArray(const DynamicArray<T>* other)
+        {
+            _capacity = other._capacity;
+            _internalArray = new T[_capacity];
+            _length = other._length;
+            other->CopyTo(_internalArray);
         }
 
         ~DynamicArray()
@@ -46,38 +67,38 @@ namespace Collections
 
         void Append(T element)
         {
-            if (_size == _capacity)
+            if (_length == _capacity)
                 Resize();
-            _internalArray[_size] = element;
-            _size++;
+            _internalArray[_length] = element;
+            _length++;
         }
 
         void Remove(size_t pos)
         {
-            if ((pos > _size) || (pos < START_INDEX))
+            if ((pos > _length) || (pos < START_INDEX))
             {
                 throw std::out_of_range("Index out of range.");
                 return;
             }
 
-            for (size_t i = pos; i <= _size; i++)
+            for (size_t i = pos; i <= _length; i++)
                 _internalArray[i] = _internalArray[i + INDEX_SHIFT];
-            _size--;
+            _length--;
         }
 
         void Insert(T element, size_t pos)
         {
-            if ((pos > _size) || (pos < START_INDEX))
+            if ((pos > _length) || (pos < START_INDEX))
             {
                 throw std::out_of_range("Index out of range.");
                 return;
             }
-            if (_size == _capacity)
+            if (_length == _capacity)
                 Resize();
 
-            _size++;
+            _length++;
 
-            for (size_t i = _size - INDEX_SHIFT; i >= pos; i--)
+            for (size_t i = _length - INDEX_SHIFT; i >= pos; i--)
             {
                 if (i == pos)
                     _internalArray[i] = element;
@@ -87,12 +108,12 @@ namespace Collections
         }
 
         void Clear() {
-            _size = 0;
+            _length = 0;
         }
 
         size_t Length() const
         {
-            return _size;
+            return _length;
         }
 
         bool Empty() const
@@ -107,9 +128,21 @@ namespace Collections
 
         T* ToArray() const
         {
-            T* arr = new T[_size];
+            T* arr = new T[_length];
             CopyTo(arr);
             return arr;
+        }
+
+        void SetAll(T val, size_t length)
+        {
+            SetLength(length);
+            SetAll(val);
+        }
+
+        void SetAll(T val)
+        {
+            for (size_t i = START_INDEX; i < _length; i++)
+                _internalArray[i] = val;
         }
     };
 }
