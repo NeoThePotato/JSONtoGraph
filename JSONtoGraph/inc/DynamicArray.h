@@ -43,6 +43,15 @@ namespace Collections
                 target[i] = _internalArray[i];
         }
 
+        void ShiftRight(size_t startIndex)
+        {
+            if (Length() > 1)
+            {
+                for (size_t i = Length() - INDEX_SHIFT; i > startIndex; i--)
+                    _internalArray[i] = _internalArray[i - INDEX_SHIFT];
+            }
+        }
+
     public:
         DynamicArray(size_t capacity = DEFAULT_CAPACITY)
         {
@@ -87,13 +96,7 @@ namespace Collections
             size_t newLength = index < Length() ? _length : index;
             newLength += INDEX_SHIFT;
             SetLength(newLength);
-
-            // Shift Right
-            if (Length() > 1)
-            {
-                for (size_t i = Length() - INDEX_SHIFT; i > index; i--)
-                    _internalArray[i] = _internalArray[i - INDEX_SHIFT];
-            }
+            ShiftRight(index);
             _internalArray[index] = element;
             _length = newLength;
         }
