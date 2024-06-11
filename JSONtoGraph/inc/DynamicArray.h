@@ -7,6 +7,7 @@ namespace Collections
     constexpr size_t EMPTY_ARRAY = 0;
     constexpr size_t START_INDEX = 0;
     constexpr size_t INDEX_SHIFT = 1;
+    constexpr size_t MIN_LENGTH_FOR_SHIFT = 1;
     constexpr size_t DEFAULT_CAPACITY = 5;
     constexpr size_t GROWTH_COEFFICIENT = 2;
 
@@ -45,7 +46,7 @@ namespace Collections
 
         void ShiftRight(size_t startIndex)
         {
-            if (Length() > 1)
+            if (Length() > MIN_LENGTH_FOR_SHIFT)
             {
                 for (size_t i = Length() - INDEX_SHIFT; i > startIndex; i--)
                     _internalArray[i] = _internalArray[i - INDEX_SHIFT];

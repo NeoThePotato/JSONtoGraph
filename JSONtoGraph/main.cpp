@@ -7,25 +7,27 @@ using std::cout, std::endl, std::cin;
 
 constexpr size_t START_INDEX = 0;
 constexpr size_t SHORTEST_PATH_START_INDEX = 1;
+constexpr unsigned int INPUT_LINKED_LIST = 1;
+constexpr unsigned int INPUT_2D_ARRAY = 2;
 constexpr const char* JSON_PATH = "source.json";
 
 static Graph::Graph* CreateGraph()
 {
-    cout << "Select graph implementation\n1: Linked List\n2: 2D Array" << endl;
+    cout << "Select graph implementation\n" << INPUT_LINKED_LIST << ": Linked List\n" << INPUT_2D_ARRAY << ": 2D Array" << endl;
     unsigned int selection;
     while (true)
     {
         cin >> selection;
-        if (selection >= 1 && selection <= 2)
+        if (selection == INPUT_LINKED_LIST || selection == INPUT_2D_ARRAY)
             break;
         else
             cout << "Invalid Input." << endl;
     }
     switch (selection)
     {
-    case 1:
+    case INPUT_LINKED_LIST:
         return new Graph::GraphLinkedList();
-    case 2:
+    case INPUT_2D_ARRAY:
         return new Graph::Graph2DArray();
     default:
         return nullptr;
