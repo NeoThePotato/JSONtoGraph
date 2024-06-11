@@ -24,7 +24,7 @@ namespace Collections
         void Resize(size_t newSize)
         {
             _capacity *= newSize;
-            _length = size > _capacity ? _capacity : _length;
+            _length = _length > _capacity ? _capacity : _length;
             T* temp = new T[_capacity];
             CopyTo(temp);
             delete[] _internalArray;
@@ -54,9 +54,9 @@ namespace Collections
 
         DynamicArray(const DynamicArray<T>* other)
         {
-            _capacity = other._capacity;
+            _capacity = other->_capacity;
             _internalArray = new T[_capacity];
-            _length = other._length;
+            _length = other->_length;
             other->CopyTo(_internalArray);
         }
 

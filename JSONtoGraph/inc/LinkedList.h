@@ -23,7 +23,7 @@ namespace Collections
 		};
 
 		Node* _head;
-		size_t _size;
+		size_t _length;
 
 		Node* GetLast() const
 		{
@@ -40,7 +40,7 @@ namespace Collections
 
 		Node* GetNode(size_t index) const
 		{
-			if (index >= _size)
+			if (index >= _length)
 				throw std::out_of_range("Index out of range.");
 			Node* current = _head;
 			for (size_t i = HEAD_INDEX; i < index; i++)
@@ -55,7 +55,7 @@ namespace Collections
 			Node* nextNode = node->next;
 			node->next = newNode;
 			newNode->next = nextNode;
-			_size++;
+			_length++;
 			return newNode;
 		}
 
@@ -79,7 +79,7 @@ namespace Collections
 
 		void InsertAt(T val, size_t index)
 		{
-			if (_size == HEAD_INDEX)
+			if (_length == HEAD_INDEX)
 				Insert(val);
 			InsertAt(val, GetNode(index));
 		}
@@ -91,7 +91,7 @@ namespace Collections
 
 		size_t Count() const
 		{
-			return _size;
+			return _length;
 		}
 	};
 }
