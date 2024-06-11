@@ -81,14 +81,14 @@ namespace IO
         return false;
     }
 
-    static DynamicArray<string>* GetStringArray(const char* source, const size_t bracketStartIndex)
+    static DynamicArray<string>* GetStringArray(const char* source, const size_t bracketStartIndex, DynamicArray<string>* arr)
     {
         size_t bracketEndIndex = FindClosingBracket(source, bracketStartIndex);
         auto fullArrayString = string(source).substr(bracketStartIndex, bracketEndIndex - bracketStartIndex + INDEX_SHIFT);
         fullArrayString.erase(remove_if(fullArrayString.begin(), fullArrayString.end(), isspace), fullArrayString.end()); // Strip spaces
         fullArrayString = fullArrayString.substr(fullArrayString.find('[') + INDEX_SHIFT, fullArrayString.rfind(']') - INDEX_SHIFT); // Strip brackets
 
-        auto arr = new DynamicArray<string>();
+        arr->Clear();
         size_t strStart = START_INDEX, strEnd;
         do
         {
@@ -100,26 +100,31 @@ namespace IO
         return arr;
     }
 
-    static DynamicArray<string>* GetStringArray(const char* source, const char* key)
+    static bool GetStringArray(const char* source, const char* key, DynamicArray<string>* arr)
     {
         size_t arrayStartIndex;
         if (GetArrayStartIndex(source, key, arrayStartIndex))
         {
-            return GetStringArray(source, arrayStartIndex);
+            GetStringArray(source, arrayStartIndex, arr);
+            return true;
         }
-        return nullptr;
+        return false;
     }
 
     template <class T>
-    static DynamicArray<T>* GetTArray(const char* source, const char* key, T (*conversionFunc)(const string&))
+    static bool GetTArray(const char* source, const char* key, T (*conversionFunc)(const string&), DynamicArray<T>* out)
     {
-        auto strArr = GetStringArray(source, key);
-        if (strArr == nullptr)
-            return nullptr;
-        DynamicArray<T>* tArr = new DynamicArray<T>(strArr->Length());
+        auto strArr = new DynamicArray<string>();
+        if (!GetStringArray(source, key, strArr))
+        {
+            delete strArr;
+            return false;
+        }
+        out->Clear();
         for (size_t i = START_INDEX; i < strArr->Length(); i++)
-            tArr->Append(conversionFunc(strArr->Get(i)));
-        return tArr;
+            out->Append(conversionFunc(strArr->Get(i)));
+        delete strArr;
+        return true;
     }
 
     static int StrToInt(const string& source)
@@ -129,20 +134,21 @@ namespace IO
 
     static Graph::Edge StrToEdge(const string& source)
     {
-        auto arr = GetStringArray(source.c_str(), START_INDEX);
-        Graph::Edge edge{ StrToInt(arr->Get(0)), StrToInt(arr->Get(1)) };
-        delete arr;
+        auto strArr = new DynamicArray<string>();
+        GetStringArray(source.c_str(), START_INDEX, strArr);
+        Graph::Edge edge{ StrToInt(strArr->Get(0)), StrToInt(strArr->Get(1)) };
+        delete strArr;
         return edge;
     }
 
-    static DynamicArray<int>* GetIntArray(const char* source, const char* key)
+    static bool GetIntArray(const char* source, const char* key, DynamicArray<int>* out)
     {
-        return GetTArray<int>(source, key, StrToInt);
+        return GetTArray<int>(source, key, StrToInt, out);
     }
 
-    static DynamicArray<Graph::Edge>* GetEdgeArray(const char* source, const char* key)
+    static bool GetEdgeArray(const char* source, const char* key, DynamicArray<Graph::Edge>* out)
     {
-        return GetTArray<Graph::Edge>(source, key, StrToEdge);
+        return GetTArray<Graph::Edge>(source, key, StrToEdge, out);
     }
 
     bool File::LoadFromJson(const char* path, Graph::Graph* graph)
@@ -155,21 +161,22 @@ namespace IO
         }
 
         // Vertices
-        auto arr = GetIntArray(str, VERTICIES_KEY);
-        if (arr == nullptr)
+        auto vertices = DynamicArray<Graph::Vertex>();
+        if (!GetIntArray(str, VERTICIES_KEY, &vertices))
             return false;
-        for (size_t i = START_INDEX; i < arr->Length(); i++)
-            graph->AddVertex(arr->Get(i));
-        delete arr;
+        for (size_t i = START_INDEX; i < vertices.Length(); i++)
+            graph->AddVertex(vertices.Get(i));
 
         // Edges
-        auto arrEdge = GetEdgeArray(str, EDGES_KEY);
-        delete[] str;
-        if (arrEdge == nullptr)
+        auto edges = DynamicArray<Graph::Edge>();
+        if (!GetEdgeArray(str, EDGES_KEY, &edges))
+        {
+            delete[] str;
             return false;
-        for (size_t i = START_INDEX; i < arrEdge->Length(); i++)
-            graph->AddEdge(arrEdge->Get(i));
-        delete arrEdge;
+        }
+        delete[] str;
+        for (size_t i = START_INDEX; i < edges.Length(); i++)
+            graph->AddEdge(edges.Get(i));
         return true;
     }
 }
