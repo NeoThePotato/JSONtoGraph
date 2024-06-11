@@ -3,6 +3,7 @@
 
 namespace Collections
 {
+    constexpr size_t EMPTY_ARRAY = 0;
     constexpr size_t START_INDEX = 0;
     constexpr size_t INDEX_SHIFT = 1;
     constexpr size_t DEFAULT_CAPACITY = 5;
@@ -22,10 +23,10 @@ namespace Collections
                 return;
             while (_capacity < neededCapacity)
                 _capacity *= GROWTH_COEFFICIENT;
-            T* temp = new T[_capacity];
-            CopyTo(temp);
+            T* newArr = new T[_capacity];
+            CopyTo(newArr);
             delete[] _internalArray;
-            _internalArray = temp;
+            _internalArray = newArr;
         }
 
         void SetLength(size_t newLength)
@@ -53,7 +54,7 @@ namespace Collections
         {
             _capacity = other->_capacity;
             _internalArray = new T[_capacity];
-            _length = other->_length;
+            _length = other->Length();
             other->CopyTo(_internalArray);
         }
 
@@ -64,40 +65,41 @@ namespace Collections
 
         void Append(T element)
         {
-            EnsureCapacity(_length + INDEX_SHIFT);
-            _internalArray[_length] = element;
-            _length++;
+            SetLength(_length + INDEX_SHIFT);
+            _internalArray[Length() - INDEX_SHIFT] = element;
         }
 
         void Remove(size_t index)
         {
-            if ((index > _length) || (index < START_INDEX))
-            {
+            if ((index > Length()) || (index < START_INDEX))
                 throw std::out_of_range("Index out of range.");
-                return;
-            }
 
-            for (size_t i = index; i <= _length; i++)
+            for (size_t i = index; i <= Length(); i++)
                 _internalArray[i] = _internalArray[i + INDEX_SHIFT];
             _length--;
         }
 
         void Insert(T element, size_t index)
         {
-            EnsureCapacity(index + INDEX_SHIFT);
-            if (index < _length)
-                _length++;
-            else
-                _length = index + INDEX_SHIFT;
+            if ((index > Length()) || (index < START_INDEX))
+                throw std::out_of_range("Index out of range.");
+            size_t newLength = index < Length() ? _length : index;
+            newLength += INDEX_SHIFT;
+            SetLength(newLength);
+            //EnsureCapacity(newLength);
 
             // Shift Right
-            for (size_t i = _length - INDEX_SHIFT; i > index; i--)
-                _internalArray[i] = _internalArray[i - INDEX_SHIFT];
+            if (Length() > 1)
+            {
+                for (size_t i = Length() - INDEX_SHIFT; i > index; i--)
+                    _internalArray[i] = _internalArray[i - INDEX_SHIFT];
+            }
             _internalArray[index] = element;
+            _length = newLength;
         }
 
         void Clear() {
-            _length = 0;
+            SetLength(EMPTY_ARRAY);
         }
 
         size_t Length() const
@@ -107,7 +109,7 @@ namespace Collections
 
         bool Empty() const
         {
-            return Length() <= 0;
+            return Length() <= EMPTY_ARRAY;
         }
 
         T Get(size_t index) const
@@ -119,17 +121,16 @@ namespace Collections
 
         void Set(T element, size_t index)
         {
-            EnsureCapacity(index + INDEX_SHIFT);
-            if (index < _length)
-                _length++;
-            else
-                _length = index + INDEX_SHIFT;
+            if (index < START_INDEX)
+                throw std::out_of_range("Index out of range.");
+            if (index >= Length())
+                SetLength(index + INDEX_SHIFT);
             _internalArray[index] = element;
         }
 
         T* ToArray() const
         {
-            T* arr = new T[_length];
+            T* arr = new T[Length()];
             CopyTo(arr);
             return arr;
         }
@@ -142,7 +143,7 @@ namespace Collections
 
         void SetAll(T val)
         {
-            for (size_t i = START_INDEX; i < _length; i++)
+            for (size_t i = START_INDEX; i < Length(); i++)
                 _internalArray[i] = val;
         }
     };
