@@ -4,41 +4,31 @@
 namespace Collections
 {
 	template <class T>
-	class Queue
+	class Queue : private DynamicArray<T>
 	{
-		DynamicArray<T>* _internalArray;
-
 	public:
-		Queue(size_t capacity = DEFAULT_CAPACITY)
-		{
-			_internalArray = new DynamicArray<T>(capacity);
-		}
-
-		~Queue()
-		{
-			delete _internalArray;
-		}
+		Queue(size_t capacity = DEFAULT_CAPACITY) : DynamicArray<T>(capacity) { };
 
 		void Enqueue(T val)
 		{
-			_internalArray->Insert(val, 0);
+			DynamicArray<T>::Insert(val, START_INDEX);
 		}
 
 		T Dequeue()
 		{
-			T val = _internalArray->Get(_internalArray->Length() - 1);
-			_internalArray->Remove(_internalArray->Length() - 1);
+			T val = DynamicArray<T>::Get(DynamicArray<T>::Length() - INDEX_SHIFT);
+			DynamicArray<T>::Remove(Length() - 1);
 			return val;
 		}
 
 		size_t Length() const
 		{
-			return _internalArray->Length();
+			return DynamicArray<T>::Length();
 		}
 
 		bool Empty() const
 		{
-			return _internalArray->Empty();
+			return DynamicArray<T>::Empty();
 		}
 	};
 }

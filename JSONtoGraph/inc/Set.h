@@ -4,36 +4,26 @@
 namespace Collections
 {
 	template <class T>
-	class Set
+	class Set : private DynamicArray<T>
 	{
-		DynamicArray<T>* _internalArray;
-
 		bool Contains(T val, size_t* index) const
 		{
 			for (*index = START_INDEX; *index < Length(); (*index)++)
 			{
-				if (val == _internalArray->Get(*index))
+				if (val == DynamicArray<T>::Get(*index))
 					return true;
 			}
 			return false;
 		}
 
 	public:
-		Set(size_t capacity = DEFAULT_CAPACITY)
-		{
-			_internalArray = new DynamicArray<T>(capacity);
-		}
-
-		~Set()
-		{
-			delete _internalArray;
-		}
+		Set(size_t capacity = DEFAULT_CAPACITY) : DynamicArray<T>(capacity) { };
 
 		bool TryAdd(T val)
 		{
 			if (!Contains(val))
 			{
-				_internalArray->Append(val);
+				DynamicArray<T>::Append(val);
 				return true;
 			}
 			return false;
@@ -44,7 +34,7 @@ namespace Collections
 			size_t index;
 			if (Contains(val, &index))
 			{
-				_internalArray->Remove(index);
+				DynamicArray<T>::Remove(index);
 				return true;
 			}
 			return false;
@@ -52,7 +42,7 @@ namespace Collections
 
 		size_t Length() const
 		{
-			return _internalArray->Length();
+			return DynamicArray<T>::Length();
 		}
 
 		bool Contains(T val) const
