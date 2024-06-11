@@ -16,15 +16,12 @@ namespace Collections
         size_t _length;
         size_t _capacity;
 
-        void Resize()
+        void EnsureCapacity(size_t neededCapacity)
         {
-            Resize(_capacity * GROWTH_COEFFICIENT);
-        }
-
-        void Resize(size_t newSize)
-        {
-            _capacity *= newSize;
-            _length = _length > _capacity ? _capacity : _length;
+            if (neededCapacity <= _capacity)
+                return;
+            while (_capacity < neededCapacity)
+                _capacity *= GROWTH_COEFFICIENT;
             T* temp = new T[_capacity];
             CopyTo(temp);
             delete[] _internalArray;
@@ -34,7 +31,7 @@ namespace Collections
         void SetLength(size_t newLength)
         {
             if (newLength > _capacity)
-                Resize(newLength);
+                EnsureCapacity(newLength);
             _length = newLength;
         }
 
@@ -67,44 +64,36 @@ namespace Collections
 
         void Append(T element)
         {
-            if (_length == _capacity)
-                Resize();
+            EnsureCapacity(_length + INDEX_SHIFT);
             _internalArray[_length] = element;
             _length++;
         }
 
-        void Remove(size_t pos)
+        void Remove(size_t index)
         {
-            if ((pos > _length) || (pos < START_INDEX))
+            if ((index > _length) || (index < START_INDEX))
             {
                 throw std::out_of_range("Index out of range.");
                 return;
             }
 
-            for (size_t i = pos; i <= _length; i++)
+            for (size_t i = index; i <= _length; i++)
                 _internalArray[i] = _internalArray[i + INDEX_SHIFT];
             _length--;
         }
 
-        void Insert(T element, size_t pos)
+        void Insert(T element, size_t index)
         {
-            if ((pos > _length) || (pos < START_INDEX))
-            {
-                throw std::out_of_range("Index out of range.");
-                return;
-            }
-            if (_length == _capacity)
-                Resize();
+            EnsureCapacity(index + INDEX_SHIFT);
+            if (index < _length)
+                _length++;
+            else
+                _length = index + INDEX_SHIFT;
 
-            _length++;
-
-            for (size_t i = _length - INDEX_SHIFT; i >= pos; i--)
-            {
-                if (i == pos)
-                    _internalArray[i] = element;
-                else
-                    _internalArray[i] = _internalArray[i - INDEX_SHIFT];
-            }
+            // Shift Right
+            for (size_t i = _length - INDEX_SHIFT; i > index; i--)
+                _internalArray[i] = _internalArray[i - INDEX_SHIFT];
+            _internalArray[index] = element;
         }
 
         void Clear() {
@@ -123,7 +112,19 @@ namespace Collections
 
         T Get(size_t index) const
         {
+            if ((index > _length) || (index < START_INDEX))
+                throw std::out_of_range("Index out of range.");
             return _internalArray[index];
+        }
+
+        void Set(T element, size_t index)
+        {
+            EnsureCapacity(index + INDEX_SHIFT);
+            if (index < _length)
+                _length++;
+            else
+                _length = index + INDEX_SHIFT;
+            _internalArray[index] = element;
         }
 
         T* ToArray() const
