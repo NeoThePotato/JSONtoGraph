@@ -130,7 +130,7 @@ namespace IO
     static Graph::Edge StrToEdge(const string& source)
     {
         auto arr = GetStringArray(source.c_str(), START_INDEX);
-        Graph::Edge edge{ StrToInt(arr->Get(0)), StrToInt(arr->Get(1)) }; // TODO Implement
+        Graph::Edge edge{ StrToInt(arr->Get(0)), StrToInt(arr->Get(1)) };
         delete arr;
         return edge;
     }

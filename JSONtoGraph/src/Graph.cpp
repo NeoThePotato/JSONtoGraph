@@ -60,41 +60,36 @@ namespace Graph
 	void Graph::BreadthFirstSearch(Vertex start, DynamicArray<Vertex>* parents) const
 	{
 		parents->SetAll(INVALID_VERTEX, VertexCount());
-		// TODO Consider stack-allocating these
-		auto visitQueue = new Queue<Vertex>(VertexCount());
-		auto visited = new Set<Vertex>(VertexCount());
-		auto neighbors = new DynamicArray<Vertex>();
-		visitQueue->Enqueue(start);
-		visited->TryAdd(start);
+		auto visitQueue = Queue<Vertex>(VertexCount());
+		auto visited = Set<Vertex>(VertexCount());
+		auto neighbors = DynamicArray<Vertex>();
+		visitQueue.Enqueue(start);
+		visited.TryAdd(start);
 
-		while (!visitQueue->Empty())
+		while (!visitQueue.Empty())
 		{
-			auto current = visitQueue->Dequeue();
-			neighbors->Clear();
-			GetNeighbors(current, neighbors);
+			auto current = visitQueue.Dequeue();
+			neighbors.Clear();
+			GetNeighbors(current, &neighbors);
 
-			for (size_t n = START_INDEX; n < neighbors->Length(); n++)
+			for (size_t n = START_INDEX; n < neighbors.Length(); n++)
 			{
-				Vertex next = neighbors->Get(n);
-				if (visited->TryAdd(next)) // If not visited yet
+				Vertex next = neighbors.Get(n);
+				if (visited.TryAdd(next)) // If not visited yet
 				{
-					visitQueue->Enqueue(next);
+					visitQueue.Enqueue(next);
 					parents->Set(current, next);
 				}
 			}
 		}
-		delete visitQueue;
-		delete visited;
-		delete neighbors;
 	}
 
 	bool Graph::ReconstructPath(Vertex start, Vertex end, DynamicArray<Vertex>* shortestPath) const
 	{
-		auto oldPath = new DynamicArray<Vertex>(shortestPath);
+		auto oldPath = DynamicArray<Vertex>(shortestPath);
 		shortestPath->Clear();
-		for (Vertex current = end; current != INVALID_VERTEX; current = oldPath->Get(current))
+		for (Vertex current = end; current != INVALID_VERTEX; current = oldPath.Get(current))
 			shortestPath->Insert(current, START_INDEX);
-		delete oldPath;
 		return shortestPath->Get(START_INDEX) == start;
 	}
 
