@@ -23,6 +23,7 @@ namespace Graph
 	class Graph
 	{
 	public:
+		virtual ~Graph();
 		// Vertices
 		virtual Vertex VertexAt(size_t index) const = 0;
 		virtual void AddVertex(Vertex v) = 0;

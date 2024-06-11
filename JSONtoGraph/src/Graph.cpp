@@ -24,6 +24,8 @@ namespace Graph
 		return INVALID_VERTEX;
 	}
 
+	Graph::~Graph() {}
+
 	bool Graph::Exists(Vertex v) const
 	{
 		for (size_t i = START_INDEX; i < VertexCount(); i++)
