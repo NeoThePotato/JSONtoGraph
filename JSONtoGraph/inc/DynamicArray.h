@@ -86,7 +86,6 @@ namespace Collections
             size_t newLength = index < Length() ? _length : index;
             newLength += INDEX_SHIFT;
             SetLength(newLength);
-            //EnsureCapacity(newLength);
 
             // Shift Right
             if (Length() > 1)
