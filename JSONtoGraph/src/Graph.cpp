@@ -1,6 +1,7 @@
 #include "Graph.h"
 #include "Queue.h"
-using Collections::DynamicArray, Collections::Queue;
+#include "Set.h"
+using Collections::DynamicArray, Collections::Queue, Collections::Set;
 
 namespace Graph
 {
@@ -16,15 +17,16 @@ namespace Graph
 		return false;
 	}
 
-	void Graph::GetNeighbors(Vertex v, DynamicArray<Edge>* out) const
+	void Graph::GetNeighbors(Vertex v, DynamicArray<Vertex>* out) const
 	{
 		if (!Exists(v))
 			return;
+		out->Clear();
 		for (size_t i = START_INDEX; i < EdgeCount(); i++)
 		{
-			Edge edge = EdgeAt(i);
-			if (edge.Contains(v))
-				out->Append(edge);
+			Vertex neighbor = EdgeAt(i).GetOther(v);
+			if (neighbor != INVALID_VERTEX)
+				out->Append(neighbor);
 		}
 	}
 
@@ -38,19 +40,47 @@ namespace Graph
 		return false;
 	}
 
-	void Graph::BreadthFirstSearch(Vertex start, Vertex end, DynamicArray<Edge>* out) const
+	void Graph::BreadthFirstSearch(Vertex start, DynamicArray<Vertex>* out) const
 	{
-		auto q = new Queue<Vertex>(VertexCount());
-		q->Enqueue(start);
+		auto visitQueue = new Queue<Vertex>(VertexCount());
+		auto visited = new Set<Vertex>(VertexCount());
+		auto neighbors = new DynamicArray<Vertex>();
+		visitQueue->Enqueue(start);
+		visited->TryAdd(start);
 
-		delete q;
+		while (visitQueue->Length() > 0)
+		{
+			auto node = visitQueue->Dequeue();
+			GetNeighbors(node, neighbors);
+
+			for (size_t n = START_INDEX; n < neighbors->Length(); n++)
+			{
+				Vertex next = neighbors->Get(n);
+				if (visited->TryAdd(next)) // If not visited yet
+				{
+					visitQueue->Enqueue(next);
+					out->Insert(next, node);
+				}
+			}
+		}
+		delete visitQueue;
+		delete visited;
+		delete neighbors;
+	}
+
+	void Graph::ReconstructPath(Vertex start, Vertex end, DynamicArray<Vertex>* path) const
+	{
+
 	}
 
 	bool Graph::ShortestPath(Vertex start, Vertex end, DynamicArray<Vertex>* out) const
 	{
 		if (Exists(start) && Exists(end))
 		{
-			// TODO Implement
+			auto path = new DynamicArray<Vertex>(VertexCount());
+			BreadthFirstSearch(start, out);
+
+			delete path;
 		}
 		return false;
 	}

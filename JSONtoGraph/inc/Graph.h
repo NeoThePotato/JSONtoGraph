@@ -6,6 +6,8 @@ namespace Graph
 {
 	using Vertex = int;
 
+	constexpr Vertex INVALID_VERTEX = -1;
+
 	struct Edge
 	{
 		Vertex v1;
@@ -20,6 +22,13 @@ namespace Graph
 		{
 			return v1 == v || v2 == v;
 		}
+
+		Vertex GetOther(Vertex v) const
+		{
+			if (Contains(v))
+				return v == v1 ? v2 : v1;
+			return INVALID_VERTEX;
+		}
 	};
 
 	class Graph
@@ -30,7 +39,7 @@ namespace Graph
 		virtual void AddVertex(Vertex) = 0;
 		virtual size_t VertexCount() const = 0;
 		bool Exists(Vertex v) const;
-		void GetNeighbors(Vertex v, DynamicArray<Edge>* out) const;
+		void GetNeighbors(Vertex v, DynamicArray<Vertex>* out) const;
 
 		// Edges
 		virtual Edge EdgeAt(size_t) const = 0;
@@ -41,6 +50,7 @@ namespace Graph
 		bool ShortestPath(Vertex v1, Vertex v2, DynamicArray<Vertex>* out) const;
 
 	private:
-		void BreadthFirstSearch(Vertex, Vertex, DynamicArray<Edge>* out) const;
+		void BreadthFirstSearch(Vertex, DynamicArray<Vertex>*) const;
+		void ReconstructPath(Vertex, Vertex, DynamicArray<Vertex>*) const;
 	};
 }
