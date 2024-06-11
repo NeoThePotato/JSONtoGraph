@@ -7,7 +7,7 @@ namespace Graph
 {
 	constexpr size_t START_INDEX = 0;
 
-	bool Edge::operator ==(Edge e) const
+	bool Edge::operator==(Edge e) const
 	{
 		return v1 == e.v1 && v2 == e.v2;
 	}
@@ -34,16 +34,16 @@ namespace Graph
 		return false;
 	}
 
-	void Graph::GetNeighbors(Vertex v, DynamicArray<Vertex>* out) const
+	void Graph::GetNeighbors(Vertex v, DynamicArray<Vertex>* neighbors) const
 	{
 		if (!Exists(v))
 			return;
-		out->Clear();
+		neighbors->Clear();
 		for (size_t i = START_INDEX; i < EdgeCount(); i++)
 		{
 			Vertex neighbor = EdgeAt(i).GetOther(v);
 			if (neighbor != INVALID_VERTEX)
-				out->Append(neighbor);
+				neighbors->Append(neighbor);
 		}
 	}
 
@@ -97,12 +97,12 @@ namespace Graph
 		return path->Get(0) == start;
 	}
 
-	bool Graph::ShortestPath(Vertex start, Vertex end, DynamicArray<Vertex>* out) const
+	bool Graph::ShortestPath(Vertex start, Vertex end, DynamicArray<Vertex>* shortestPath) const
 	{
 		if (Exists(start) && Exists(end))
 		{
-			BreadthFirstSearch(start, out);
-			return ReconstructPath(start, end, out);
+			BreadthFirstSearch(start, shortestPath);
+			return ReconstructPath(start, end, shortestPath);
 		}
 		return false;
 	}

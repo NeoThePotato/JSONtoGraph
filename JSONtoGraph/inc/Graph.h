@@ -13,7 +13,7 @@ namespace Graph
 		Vertex v1;
 		Vertex v2;
 
-		bool operator ==(Edge e) const;
+		bool operator==(Edge other) const;
 
 		bool Contains(Vertex v) const;
 
@@ -24,19 +24,19 @@ namespace Graph
 	{
 	public:
 		// Vertices
-		virtual Vertex VertexAt(size_t) const = 0;
-		virtual void AddVertex(Vertex) = 0;
+		virtual Vertex VertexAt(size_t index) const = 0;
+		virtual void AddVertex(Vertex v) = 0;
 		virtual size_t VertexCount() const = 0;
 		bool Exists(Vertex v) const;
-		void GetNeighbors(Vertex v, DynamicArray<Vertex>* out) const;
+		void GetNeighbors(Vertex v, DynamicArray<Vertex>* neighbors) const;
 
 		// Edges
-		virtual Edge EdgeAt(size_t) const = 0;
-		virtual void AddEdge(Edge) = 0;
+		virtual Edge EdgeAt(size_t index) const = 0;
+		virtual void AddEdge(Edge e) = 0;
 		virtual size_t EdgeCount() const = 0;
 		bool Exists(Edge e) const;
 
-		bool ShortestPath(Vertex v1, Vertex v2, DynamicArray<Vertex>* out) const;
+		bool ShortestPath(Vertex start, Vertex end, DynamicArray<Vertex>* shortestPath) const;
 
 	private:
 		void BreadthFirstSearch(Vertex, DynamicArray<Vertex>*) const;
