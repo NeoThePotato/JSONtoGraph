@@ -1,6 +1,6 @@
+#pragma once
 #include "Graph.h"
 
-#pragma once
 namespace IO
 {
 	constexpr auto VERTICIES_KEY = "\"vertices\"";

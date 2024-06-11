@@ -1,6 +1,6 @@
+#pragma once
 #include "DynamicArray.h";
 
-#pragma once
 namespace Collections
 {
 	template <class T>

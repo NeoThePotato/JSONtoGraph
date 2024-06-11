@@ -1,6 +1,5 @@
-#include <stdexcept>
-
 #pragma once
+#include <stdexcept>
 
 namespace Collections
 {

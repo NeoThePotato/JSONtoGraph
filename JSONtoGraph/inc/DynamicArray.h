@@ -1,6 +1,6 @@
+#pragma once
 #include <stdexcept>
 
-#pragma once
 namespace Collections
 {
     constexpr size_t START_INDEX = 0;

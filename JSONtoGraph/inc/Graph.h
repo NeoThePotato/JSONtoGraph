@@ -1,7 +1,7 @@
+#pragma once
 #include "DynamicArray.h"
 using Collections::DynamicArray;
 
-#pragma once
 namespace Graph
 {
 	using Vertex = int;
