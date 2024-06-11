@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdexcept>
 #include "File.h"
 #include "GraphLinkedList.h"
 #include "Graph2DArray.h"
@@ -6,6 +7,7 @@ using std::cout, std::endl, std::cin;
 
 constexpr size_t START_INDEX = 0;
 constexpr size_t SHORTEST_PATH_START_INDEX = 1;
+constexpr const char* JSON_PATH = "source.json";
 
 static Graph::Graph* CreateGraph()
 {
@@ -30,15 +32,22 @@ static Graph::Graph* CreateGraph()
     }
 }
 
-static void LoadFromJson(Graph::Graph* graph)
+static bool LoadFromJson(const char * path, Graph::Graph* graph)
 {
-    IO::File::LoadFromJson("source.json", graph);
-    cout << "Loaded Graph:" << endl;
+    try
+    {
+        return IO::File::LoadFromJson(path, graph);
+    }
+    catch (std::exception e)
+    {
+        cout << "Failed to load JSON file:\n" << e.what() << endl;
+        return false;
+    }
 }
 
 static void PrintGraph(const Graph::Graph* graph)
 {
-    cout << "Vertices:\n";
+    cout << "Loaded Graph:\nVertices:\n";
     for (size_t i = START_INDEX; i < graph->VertexCount(); i++)
         cout << '\t' << graph->VertexAt(i) << '\n';
     cout << "Edges:\n";
@@ -86,10 +95,12 @@ static void PrintShortestPath(const Graph::Graph* graph, Graph::Vertex v1, Graph
 int main(int argc, char* argv[])
 {
     auto graph = CreateGraph();
-    LoadFromJson(graph);
-    PrintGraph(graph);
-    Graph::Vertex v1, v2;
-    SelectPath(graph, &v1, &v2);
-    PrintShortestPath(graph, v1, v2);
+    if (LoadFromJson(JSON_PATH, graph))
+    {
+        PrintGraph(graph);
+        Graph::Vertex v1, v2;
+        SelectPath(graph, &v1, &v2);
+        PrintShortestPath(graph, v1, v2);
+    }
     delete graph;
 }
