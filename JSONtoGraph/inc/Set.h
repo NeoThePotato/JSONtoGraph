@@ -29,7 +29,7 @@ namespace Collections
 			delete _internalArray;
 		}
 
-		bool Add(T val)
+		bool TryAdd(T val)
 		{
 			if (!Contains(val))
 			{
@@ -39,7 +39,7 @@ namespace Collections
 			return false;
 		}
 
-		bool Remove(T val)
+		bool TryRemove(T val)
 		{
 			size_t index;
 			if (Contains(val, &index))
