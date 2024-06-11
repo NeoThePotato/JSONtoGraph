@@ -23,7 +23,7 @@ void Graph2DArray::AddVertex(Vertex vertex)
     _vertices->Append(vertex);
 }
 
-size_t Graph2DArray::Graph2DArray::VertexCount() const
+size_t Graph2DArray::VertexCount() const
 {
     return _vertices->Length();
 }
@@ -38,7 +38,7 @@ void Graph2DArray::AddEdge(Edge edge)
     _edges->Append(edge);
 }
 
-size_t Graph2DArray::Graph2DArray::EdgeCount() const
+size_t Graph2DArray::EdgeCount() const
 {
     return _edges->Length();
 }

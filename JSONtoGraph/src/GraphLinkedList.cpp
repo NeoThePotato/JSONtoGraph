@@ -17,7 +17,7 @@ void GraphLinkedList::AddVertex(Vertex vertex)
     return _vertices.Insert(vertex);
 }
 
-size_t GraphLinkedList::GraphLinkedList::VertexCount() const
+size_t GraphLinkedList::VertexCount() const
 {
     return _vertices.Count();
 }
@@ -32,7 +32,7 @@ void GraphLinkedList::AddEdge(Edge edge)
     return _edges.Insert(edge);
 }
 
-size_t GraphLinkedList::GraphLinkedList::EdgeCount() const
+size_t GraphLinkedList::EdgeCount() const
 {
     return _edges.Count();
 }
