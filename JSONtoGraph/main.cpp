@@ -13,7 +13,7 @@ static Graph::Graph* CreateGraph()
     while (true)
     {
         cin >> selection;
-        if (selection <= 2)
+        if (selection >= 1 && selection <= 2)
             break;
         else
             cout << "Invalid Input." << endl;
