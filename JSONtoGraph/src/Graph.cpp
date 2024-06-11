@@ -70,6 +70,7 @@ namespace Graph
 		while (!visitQueue->Empty())
 		{
 			auto current = visitQueue->Dequeue();
+			neighbors->Clear();
 			GetNeighbors(current, neighbors);
 
 			for (size_t n = START_INDEX; n < neighbors->Length(); n++)
@@ -78,7 +79,7 @@ namespace Graph
 				if (visited->TryAdd(next)) // If not visited yet
 				{
 					visitQueue->Enqueue(next);
-					parents->Insert(next, current);
+					parents->Set(current, next);
 				}
 			}
 		}
@@ -87,14 +88,14 @@ namespace Graph
 		delete neighbors;
 	}
 
-	bool Graph::ReconstructPath(Vertex start, Vertex end, DynamicArray<Vertex>* path) const
+	bool Graph::ReconstructPath(Vertex start, Vertex end, DynamicArray<Vertex>* shortestPath) const
 	{
-		auto oldPath = new DynamicArray<Vertex>(path);
-		path->Clear();
+		auto oldPath = new DynamicArray<Vertex>(shortestPath);
+		shortestPath->Clear();
 		for (Vertex current = end; current != INVALID_VERTEX; current = oldPath->Get(current))
-			path->Insert(current, 0);
+			shortestPath->Insert(current, START_INDEX);
 		delete oldPath;
-		return path->Get(0) == start;
+		return shortestPath->Get(START_INDEX) == start;
 	}
 
 	bool Graph::ShortestPath(Vertex start, Vertex end, DynamicArray<Vertex>* shortestPath) const
