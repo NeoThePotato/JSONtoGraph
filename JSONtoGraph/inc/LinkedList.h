@@ -47,13 +47,22 @@ namespace Collections
 			return current;
 		}
 
-		Node* InsertAt(T val, Node* node)
+		Node* InsertAfter(T val, Node* node)
 		{
 			Node* newNode = new Node();
 			newNode->val = val;
 			Node* nextNode = node->next;
 			node->next = newNode;
 			newNode->next = nextNode;
+			_length++;
+			return newNode;
+		}
+
+		Node* SetHead(T val)
+		{
+			Node* newNode = new Node();
+			newNode->val = val;
+			_head = newNode;
 			_length++;
 			return newNode;
 		}
@@ -68,19 +77,17 @@ namespace Collections
 		{
 			Node* last = GetLast();
 			if (last == nullptr)
-			{
-				last = new Node();
-				last->val = val;
-				_head = last;
-			}
-			InsertAt(val, last);
+				SetHead(val);
+			else
+				InsertAfter(val, last);
 		}
 
 		void InsertAt(T val, size_t index)
 		{
 			if (_length == HEAD_INDEX)
 				Insert(val);
-			InsertAt(val, GetNode(index));
+			else
+				InsertAfter(val, GetNode(index));
 		}
 
 		T Get(size_t index) const
