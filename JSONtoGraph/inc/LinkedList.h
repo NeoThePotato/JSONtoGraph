@@ -1,5 +1,6 @@
 #pragma once
 #include <stdexcept>
+#define INDEX_OUT_OF_RANGE throw std::out_of_range("Index out of range.")
 
 namespace Collections
 {
@@ -40,7 +41,7 @@ namespace Collections
 		Node* GetNode(size_t index) const
 		{
 			if (index >= _length)
-				throw std::out_of_range("Index out of range.");
+				INDEX_OUT_OF_RANGE;
 			Node* current = _head;
 			for (size_t i = HEAD_INDEX; i < index; i++)
 				current = current->next;
@@ -85,7 +86,7 @@ namespace Collections
 		void InsertAt(T val, size_t index)
 		{
 			if (index >= _length)
-				throw std::out_of_range("Index out of range.");
+				INDEX_OUT_OF_RANGE;
 			if (_length == HEAD_INDEX)
 				Insert(val);
 			else

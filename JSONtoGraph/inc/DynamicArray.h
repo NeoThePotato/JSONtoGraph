@@ -1,5 +1,6 @@
 #pragma once
 #include <stdexcept>
+#define INDEX_OUT_OF_RANGE throw std::out_of_range("Index out of range.")
 
 namespace Collections
 {
@@ -72,7 +73,7 @@ namespace Collections
         void Remove(size_t index)
         {
             if ((index > Length()) || (index < START_INDEX))
-                throw std::out_of_range("Index out of range.");
+                INDEX_OUT_OF_RANGE;
 
             for (size_t i = index; i <= Length(); i++)
                 _internalArray[i] = _internalArray[i + INDEX_SHIFT];
@@ -82,7 +83,7 @@ namespace Collections
         void Insert(T element, size_t index)
         {
             if ((index > Length()) || (index < START_INDEX))
-                throw std::out_of_range("Index out of range.");
+                INDEX_OUT_OF_RANGE;
             size_t newLength = index < Length() ? _length : index;
             newLength += INDEX_SHIFT;
             SetLength(newLength);
@@ -114,14 +115,14 @@ namespace Collections
         T Get(size_t index) const
         {
             if ((index > _length) || (index < START_INDEX))
-                throw std::out_of_range("Index out of range.");
+                INDEX_OUT_OF_RANGE;
             return _internalArray[index];
         }
 
         void Set(T element, size_t index)
         {
             if (index < START_INDEX)
-                throw std::out_of_range("Index out of range.");
+                INDEX_OUT_OF_RANGE;
             if (index >= Length())
                 SetLength(index + INDEX_SHIFT);
             _internalArray[index] = element;
