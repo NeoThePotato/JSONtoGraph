@@ -5,6 +5,7 @@
 using std::cout, std::endl, std::cin;
 
 constexpr size_t START_INDEX = 0;
+constexpr size_t SHORTEST_PATH_START_INDEX = 1;
 
 static Graph::Graph* CreateGraph()
 {
@@ -70,14 +71,14 @@ static void PrintShortestPath(const Graph::Graph* graph, Graph::Vertex v1, Graph
     auto path = new DynamicArray<Graph::Vertex>();
     if (graph->ShortestPath(v1, v2, path))
     {
-        cout << "Shortest path between " << v1 << " and " << v2 << " is:" << '\n';
-        for (size_t i = START_INDEX; i < path->Length(); i++)
-            cout << path->Get(i) << '\n';
+        cout << "\nShortest path between " << v1 << " and " << v2 << " is:" << endl << path->Get(START_INDEX);
+        for (size_t i = SHORTEST_PATH_START_INDEX; i < path->Length(); i++)
+            cout << " -> " << path->Get(i);
         cout << endl;
     }
     else
     {
-        cout << "No path found between " << v1 << " and " << v2 << endl;
+        cout << "\nNo path found between " << v1 << " and " << v2 << endl;
     }
     delete path;
 }
