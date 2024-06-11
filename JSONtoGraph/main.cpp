@@ -35,7 +35,7 @@ static void LoadFromJson(Graph::Graph* graph)
     cout << "Loaded Graph:" << endl;
 }
 
-static void PrintGraph(Graph::Graph* graph)
+static void PrintGraph(const Graph::Graph* graph)
 {
     cout << "Vertices:\n";
     for (size_t i = START_INDEX; i < graph->VertexCount(); i++)
@@ -46,7 +46,7 @@ static void PrintGraph(Graph::Graph* graph)
     cout << endl;
 }
 
-static void SelectVertex(Graph::Graph* graph, Graph::Vertex* vertex)
+static void SelectVertex(const Graph::Graph* graph, Graph::Vertex* vertex)
 {
     while (true)
     {
@@ -58,14 +58,14 @@ static void SelectVertex(Graph::Graph* graph, Graph::Vertex* vertex)
     }
 }
 
-static void SelectPath(Graph::Graph* graph, Graph::Vertex* v1, Graph::Vertex* v2)
+static void SelectPath(const Graph::Graph* graph, Graph::Vertex* v1, Graph::Vertex* v2)
 {
     cout << "Select 2 vertices on the graph:" << endl;
     SelectVertex(graph, v1);
     SelectVertex(graph, v2);
 }
 
-static void PrintShortestPath(Graph::Graph* graph, Graph::Vertex v1, Graph::Vertex v2)
+static void PrintShortestPath(const Graph::Graph* graph, Graph::Vertex v1, Graph::Vertex v2)
 {
     auto path = new DynamicArray<Graph::Vertex>();
     if (graph->ShortestPath(v1, v2, path))
