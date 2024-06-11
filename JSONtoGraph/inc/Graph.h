@@ -13,22 +13,11 @@ namespace Graph
 		Vertex v1;
 		Vertex v2;
 
-		bool operator ==(Edge e) const
-		{
-			return v1 == e.v1 && v2 == e.v2;
-		}
+		bool operator ==(Edge e) const;
 
-		bool Contains(Vertex v) const
-		{
-			return v1 == v || v2 == v;
-		}
+		bool Contains(Vertex v) const;
 
-		Vertex GetOther(Vertex v) const
-		{
-			if (Contains(v))
-				return v == v1 ? v2 : v1;
-			return INVALID_VERTEX;
-		}
+		Vertex GetOther(Vertex v) const;
 	};
 
 	class Graph

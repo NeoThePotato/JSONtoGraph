@@ -7,6 +7,23 @@ namespace Graph
 {
 	constexpr size_t START_INDEX = 0;
 
+	bool Edge::operator ==(Edge e) const
+	{
+		return v1 == e.v1 && v2 == e.v2;
+	}
+
+	bool Edge::Contains(Vertex v) const
+	{
+		return v1 == v || v2 == v;
+	}
+
+	Vertex Edge::GetOther(Vertex v) const
+	{
+		if (Contains(v))
+			return v == v1 ? v2 : v1;
+		return INVALID_VERTEX;
+	}
+
 	bool Graph::Exists(Vertex v) const
 	{
 		for (size_t i = START_INDEX; i < VertexCount(); i++)
