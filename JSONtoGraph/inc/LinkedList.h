@@ -84,6 +84,8 @@ namespace Collections
 
 		void InsertAt(T val, size_t index)
 		{
+			if (index >= _length)
+				throw std::out_of_range("Index out of range.");
 			if (_length == HEAD_INDEX)
 				Insert(val);
 			else
