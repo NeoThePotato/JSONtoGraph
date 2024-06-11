@@ -35,5 +35,10 @@ namespace Collections
 		{
 			return _internalArray->Length();
 		}
+
+		bool Empty() const
+		{
+			return _internalArray->Empty();
+		}
 	};
 }

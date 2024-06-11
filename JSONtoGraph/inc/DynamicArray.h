@@ -95,6 +95,11 @@ namespace Collections
             return _size;
         }
 
+        bool Empty() const
+        {
+            return Length() <= 0;
+        }
+
         T Get(size_t index) const
         {
             return _internalArray[index];

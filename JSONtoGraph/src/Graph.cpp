@@ -48,7 +48,7 @@ namespace Graph
 		visitQueue->Enqueue(start);
 		visited->TryAdd(start);
 
-		while (visitQueue->Length() > 0)
+		while (!visitQueue->Empty())
 		{
 			auto node = visitQueue->Dequeue();
 			GetNeighbors(node, neighbors);
