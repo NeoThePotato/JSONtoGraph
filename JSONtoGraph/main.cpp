@@ -100,11 +100,13 @@ int main(int argc, char* argv[])
     if (graph == nullptr)
     {
         cout << "\nCouldn't create graph." << endl;
+        system("pause");
         return 1;
     }
     if (!LoadFromJson(JSON_PATH, graph))
     {
         cout << "\nCouldn't load JSON file \"" << JSON_PATH << "\"." << endl;
+        system("pause");
         return 1;
     }
     PrintGraph(graph);
@@ -112,5 +114,6 @@ int main(int argc, char* argv[])
     SelectPath(graph, &v1, &v2);
     PrintShortestPath(graph, v1, v2);
     delete graph;
+    system("pause");
     return 0;
 }
