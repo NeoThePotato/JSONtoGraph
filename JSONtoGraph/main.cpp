@@ -97,12 +97,20 @@ static void PrintShortestPath(const Graph::Graph* graph, Graph::Vertex v1, Graph
 int main(int argc, char* argv[])
 {
     auto graph = CreateGraph();
-    if (LoadFromJson(JSON_PATH, graph))
+    if (graph == nullptr)
     {
-        PrintGraph(graph);
-        Graph::Vertex v1, v2;
-        SelectPath(graph, &v1, &v2);
-        PrintShortestPath(graph, v1, v2);
+        cout << "\nCouldn't create graph." << endl;
+        return 1;
     }
+    if (!LoadFromJson(JSON_PATH, graph))
+    {
+        cout << "\nCouldn't load JSON file \"" << JSON_PATH << "\"." << endl;
+        return 1;
+    }
+    PrintGraph(graph);
+    Graph::Vertex v1, v2;
+    SelectPath(graph, &v1, &v2);
+    PrintShortestPath(graph, v1, v2);
     delete graph;
+    return 0;
 }
