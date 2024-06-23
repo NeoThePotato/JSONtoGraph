@@ -53,6 +53,12 @@ namespace Collections
             }
         }
 
+        void ShiftLeft(size_t startIndex)
+        {
+            for (size_t i = startIndex; i <= Length(); i++)
+                _internalArray[i] = _internalArray[i + INDEX_SHIFT];
+        }
+
     public:
         DynamicArray(size_t capacity = DEFAULT_CAPACITY)
         {
@@ -84,9 +90,7 @@ namespace Collections
         {
             if ((index > Length()) || (index < START_INDEX))
                 INDEX_OUT_OF_RANGE;
-
-            for (size_t i = index; i <= Length(); i++)
-                _internalArray[i] = _internalArray[i + INDEX_SHIFT];
+            ShiftLeft(index);
             _length--;
         }
 
